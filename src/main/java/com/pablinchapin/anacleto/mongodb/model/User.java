@@ -2,6 +2,8 @@ package com.pablinchapin.anacleto.mongodb.model;
 
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
@@ -19,14 +21,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document(collection = "users")
 @JsonPropertyOrder({"userId", "name"})
+@ApiModel("Model User")
 public class User implements Serializable {
     
     private static final long serialVersionUID = -7788619177798333712L;
     
     @Id
     @NotNull
+    @ApiModelProperty(value = "the user's id ", required = true)
     private String userId;
     @NotNull
+    @ApiModelProperty(value = "the user's name ", required = true)
     private String name;
 
     public String getUserId() {

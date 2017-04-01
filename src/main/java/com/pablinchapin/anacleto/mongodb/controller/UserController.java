@@ -8,6 +8,8 @@ package com.pablinchapin.anacleto.mongodb.controller;
 import com.pablinchapin.anacleto.mongodb.exception.UserNotFoundException;
 import com.pablinchapin.anacleto.mongodb.model.User;
 import com.pablinchapin.anacleto.mongodb.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("users")
+@Api(value = "User microservice", description = "This API has a CRUD Operations on User Model")
 public class UserController {
     
     private static final Log log = LogFactory.getLog(UserController.class);
@@ -41,12 +44,14 @@ public class UserController {
     
     
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<User>> userById(){
+    @ApiOperation(value = "Find all users", notes = "Return all users available")
+    public ResponseEntity<List<User>> usersAll(){
         log.info("Get All users");
         return ResponseEntity.ok(usersService.findAll());
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+    @ApiOperation(value = "Find a user", notes = "Return a user by userId")
     public ResponseEntity<User> userById(@PathVariable String userId) throws UserNotFoundException{
         log.info("Get userById");
         try{
@@ -60,6 +65,7 @@ public class UserController {
     
     
     @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "Create a user", notes = "Create a new user")
     public ResponseEntity<User> saveUser(@RequestBody @Valid User user){
         log.info("Save new user");
         return ResponseEntity.ok(usersService.saveUser(user));
@@ -67,6 +73,7 @@ public class UserController {
     
     
     @RequestMapping(method = RequestMethod.PUT)
+    @ApiOperation(value = "Update a user", notes = "Updates user passed")
     public ResponseEntity<Void> updateUser(@RequestBody @Valid User user){
         log.info("update user" + user.getUserId());
         
@@ -77,6 +84,7 @@ public class UserController {
     
     
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete a user", notes = "Delete a user by userId")
     public ResponseEntity<Void> deleteUser(@PathVariable String userId){
         log.info("Delete user "+userId);
         usersService.deleteUser(userId);
